@@ -68,21 +68,13 @@ function reconnect(endp, reconnects=0)
         println("Endpoint exhausted, sleeping for $sleeptime seconds..")
         sleep(sleeptime^reconnects)
     end
-    return get_endpoint_ation(endp)
+    return get_endpoint_allocation(endp)
 end
 
 # just needs testing
-macro backoff(ex)
-    if (typeof(ex.args[2])==Expr) & (ex.args[2].args[2]==:endp)
-        local endp = ex.args[2].args[2]
-        cur_alloc = reconnect(eval(endp)) # start reconnect loop
-        remaining_calls = cur_alloc["remaining"]
-        println("$remaining_calls calls left on this endpoint.")
-        sleep(rand(1:3))
-        eval(ex)
-    else
-        error("Expression not compatible with this macro, must have endpoint argument.")
-    end
+#    else
+#        error("Expression not compatible with this macro, must have endpoint argument.")
+#    end
 end
 
 ## TESTING
